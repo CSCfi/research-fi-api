@@ -17,7 +17,7 @@ objects:
 - apiVersion: v1
   kind: Service
   metadata:
-    name: researchfi-api
+    name: researchfi-api-service
     annotations:
       description: Research.fi api service
   spec:
@@ -28,11 +28,17 @@ objects:
     selector:
       name: researchfi-api
 
-# ImageStream
+# ImageStream for devel
 - apiVersion: v1
   kind: ImageStream
   metadata:
-    name: researchfi-api
+    name: researchfi-api-devel
+
+# ImageStream for production
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    name: researchfi-api-production
 
 # BuildConfig using source to image (s2i) strategy
 - apiVersion: v1
@@ -66,30 +72,9 @@ objects:
     output:
       to:
         kind: ImageStreamTag
-        name: researchfi-api:latest
+        name: researchfi-api-devel:latest
     successfulBuildsHistoryLimit: 4 
     failedBuildsHistoryLimit: 4
-
-# BuildConfig using Docker build strategy
-#- apiVersion: v1
-#  kind: BuildConfig
-#  metadata:
-#    name: researchfi-api-build
-#  spec:
-#    source:
-#      git:
-#        uri: https://github.com/CSCfi/research-fi-api.git
-#        ref: devel
-#      contextDir: django
-#    strategy:
-#      dockerStrategy:
-#        dockerfilePath: Dockerfile
-#    output:
-#      to:
-#        kind: ImageStreamTag
-#        name: researchfi-api:latest
-#    successfulBuildsHistoryLimit: 4
-#    failedBuildsHistoryLimit: 4
 
 # Jenkins pipeline
 - apiVersion: v1
@@ -106,53 +91,91 @@ objects:
       jenkinsPipelineStrategy:
         jenkinsfilePath: openshift/Jenkinsfile
 
-# Deployment config
+# Deployment config for devel
 - apiVersion: v1
   kind: DeploymentConfig
   metadata:
-    name: researchfi-api
+    name: api-devel
   spec:
     template:
       metadata:
         labels:
-          name: researchfi-api
+          name: researchfi-api-deployment-devel
       spec:
         containers:
-          - name: researchfi-api
-            image: ts/researchfi-api
+          - name: api-devel
+            image: researchfi/researchfi-api-devel
+            imagePullPolicy: Always
             ports:
               - containerPort: 8000
                 protocol: TCP
             env:
               - name: DJANGO_ENV_SECRET_KEY
-                value: ${DJANGO_ENV_SECRET_KEY}
+                value: ${DJANGO_ENV_SECRET_KEY_DEVEL}
               - name: DJANGO_ENV_ELASTICSEARCH_HOST
-                value: ${DJANGO_ENV_ELASTICSEARCH_HOST}
-#            command:
-#              - gunicorn
-#            args:
-#              - webapps.wsgi:application
-#              - --bind
-#              - 0.0.0.0:8000
+                value: ${DJANGO_ENV_ELASTICSEARCH_HOST_DEVEL}
     replicas: 1
     selector:
-      name: researchfi-api
+      name: researchfi-api-deployment-devel
     triggers:
     - type: ConfigChange
     - type: ImageChange
       imageChangeParams:
         automatic: true
         containerNames:
-        - researchfi-api
+        - api-devel
         from:
           kind: ImageStreamTag
-          name: researchfi-api:latest
+          name: researchfi-api-devel:latest
+    strategy:
+      type: Rolling
+
+# Deployment config for production
+- apiVersion: v1
+  kind: DeploymentConfig
+  metadata:
+    name: api-production
+  spec:
+    template:
+      metadata:
+        labels:
+          name: researchfi-api-deployment-production
+      spec:
+        containers:
+          - name: api-production
+            image: researchfi/researchfi-api-production
+            imagePullPolicy: Always
+            ports:
+              - containerPort: 8000
+                protocol: TCP
+            env:
+              - name: DJANGO_ENV_SECRET_KEY
+                value: ${DJANGO_ENV_SECRET_KEY_PRODUCTION}
+              - name: DJANGO_ENV_ELASTICSEARCH_HOST
+                value: ${DJANGO_ENV_ELASTICSEARCH_HOST_PRODUCTION}
+    replicas: 1
+    selector:
+      name: researchfi-api-deployment-production
+    triggers:
+    - type: ConfigChange
+    - type: ImageChange
+      imageChangeParams:
+        automatic: true
+        containerNames:
+        - api-production
+        from:
+          kind: ImageStreamTag
+          name: researchfi-api-production:latest
     strategy:
       type: Rolling
 
 # Template parameters
 parameters:
-- name: DJANGO_ENV_SECRET_KEY
-  description: Sets Django SECRET_KEY
-- name: DJANGO_ENV_ELASTICSEARCH_HOST
-  description: Elasticsearch address
+- name: DJANGO_ENV_SECRET_KEY_DEVEL
+  description: Devel enviroment Django SECRET_KEY, random string.
+- name: DJANGO_ENV_ELASTICSEARCH_HOST_DEVEL
+  description: Devel environment Elasticsearch address, for example 'https://myhost-devel.mydomain:myport'
+- name: DJANGO_ENV_SECRET_KEY_PRODUCTION
+  description: Production enviroment Django SECRET_KEY, random string.
+- name: DJANGO_ENV_ELASTICSEARCH_PRODUCTION
+  description: Production environment Elasticsearch address, for example 'https://myhost-prod.mydomain:myport'
