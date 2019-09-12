@@ -208,13 +208,9 @@ objects:
 parameters:
 - name: DJANGO_ENV_SECRET_KEY_DEVEL
   description: Devel enviroment Django SECRET_KEY, random string.
-  value: a
 - name: DJANGO_ENV_ELASTICSEARCH_HOST_DEVEL
   description: Devel environment Elasticsearch address, for example 'https://myhost-devel.mydomain:myport'
-  value: b
 - name: DJANGO_ENV_SECRET_KEY_PRODUCTION
   description: Production enviroment Django SECRET_KEY, random string.
-  value: c
 - name: DJANGO_ENV_ELASTICSEARCH_PRODUCTION
   description: Production environment Elasticsearch address, for example 'https://myhost-prod.mydomain:myport'
-  value: d
