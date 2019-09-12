@@ -137,7 +137,7 @@ objects:
       spec:
         containers:
           - name: api-devel
-            image: ts/researchfi-api-devel
+            image: researchfi/researchfi-api-devel
             imagePullPolicy: Always
             ports:
               - containerPort: 8001
@@ -180,7 +180,7 @@ objects:
       spec:
         containers:
           - name: api-production
-            image: ts/researchfi-api-production
+            image: researchfi/researchfi-api-production
             imagePullPolicy: Always
             ports:
               - containerPort: 8002
