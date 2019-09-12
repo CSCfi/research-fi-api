@@ -73,7 +73,7 @@ objects:
   spec:
     source:
       git:
-        uri: https://github.com/sarkikos/research-fi-api.git
+        uri: https://github.com/CSCfi/research-fi-api.git
         ref: devel
       contextDir: django
     strategy:
@@ -111,7 +111,7 @@ objects:
   spec:
     source:
       git:
-        uri: https://github.com/sarkikos/research-fi-api.git
+        uri: https://github.com/CSCfi/research-fi-api.git
         ref: devel
       contextDir: django
     strategy:
