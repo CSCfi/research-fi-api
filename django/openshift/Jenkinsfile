@@ -72,7 +72,7 @@ pipeline {
           sh(script: "oc exec ${podname} -- bash -c 'cd webapps && python manage.py test'", returnStdout: true)
 
           // Copy the test result XML from pod to Jenkins instance.
-          sh(script: "oc rsync ${podname}:webapps/portalapi/unittest_results/result.xml .", returnStdout: true)
+          sh(script: "oc rsync ${podname}:/opt/app-root/src/webapps/portalapi/unittest_results/result.xml .", returnStdout: true)
 
           // Record test result to Jenkins.
           junit 'result.xml'
