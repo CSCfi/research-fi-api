@@ -72,14 +72,6 @@ node {
     }
 
     /*
-     * Python unit tests.
-     * Start Docker container and run Python unit tests.
-     */
-    stage('Unit tests'){
-      sh "docker run --rm -e DJANGO_ENV_SECRET_KEY=abc123 ${tag_githash} /bin/ash -c 'cd webapps; pipenv run python manage.py test'"
-    }
-
-    /*
     * Push Docker image to registry only if Git branch is 'master' or 'devel'
     */
     if ("${branchname}" == "master" || "${branchname}" == "devel") {
