@@ -66,7 +66,7 @@ pipeline {
       steps {
         script {
           // Get name of the pod running the devel image
-          def podname = sh(script: "oc get pod --selector depcfg=api-devel -o jsonpath='{.items[0].metadata.name}'", returnStdout: true)
+          def podname = sh(script: "oc get pod --selector deploymentconfig=researchfi-api-devel-deployment -o jsonpath='{.items[0].metadata.name}'", returnStdout: true)
 
           // Execute python unit test in pod. Test result will be output to file 'result.xml'.
           sh(script: "oc exec ${podname} -- bash -c 'cd webapps && python manage.py test'", returnStdout: true)
