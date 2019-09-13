@@ -122,6 +122,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# Settings for https://github.com/xmlrunner/unittest-xml-reporting
+TEST_RUNNER = 'xmlrunner.extra.djangotestrunner.XMLTestRunner'
+TEST_OUTPUT_DIR = 'portalapi/unittest_results'
+TEST_OUTPUT_FILE_NAME = 'result.xml'
 
 # Import local settings, if defined.
 # Local settings can be used to overwrite values in development and testing environments.
