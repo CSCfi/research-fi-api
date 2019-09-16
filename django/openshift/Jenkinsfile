@@ -11,12 +11,20 @@ pipeline {
     }
   }
 
+  environment {
+    // Get short version of Git commit hash.
+    GIT_COMMIT_SHORT = sh(
+      script: "printf \$(git rev-parse --short ${GIT_COMMIT})",
+      returnStdout: true
+    )
+  }
+
   options {
+    // Pipeline timeout
     timeout(time: 15, unit: 'MINUTES') 
   }
 
   stages {
-
     /*
     Build image using build config "researchfi-api-build".
     After build is complete, OpenShift's image change trigger automatically updates devel deployment.
@@ -31,6 +39,10 @@ pipeline {
               def buildConfig = openshift.selector("bc", "researchfi-api-build")
               // Start build and display logs
               buildConfig.startBuild().logs("-f")
+
+              // New image gets automatically tagged "latest", it is defined in the OpenShift build config.
+              // Tag image also using short Git commit hash.
+              openshift.tag("researchfi-api-devel:latest", "researchfi-api-devel:${GIT_COMMIT_SHORT}")
             }
           }
         }
@@ -82,7 +94,8 @@ pipeline {
     /*
     Deploy to production.
     Confirm deployment by prompting user.
-    Tag the devel image with production tag. This triggers production deployment in OpenShift.
+    Production deployment is triggered by tagging the devel "latest" as production "latest".
+    Also tag the production "latest" with Git commit hash.
     */
     stage('Deploy to production') {
       steps {
@@ -93,6 +106,7 @@ pipeline {
           openshift.withCluster() {
             openshift.withProject() {
               openshift.tag("researchfi-api-devel:latest", "researchfi-api-production:latest")
+              openshift.tag("researchfi-api-production:latest", "researchfi-api-production:${GIT_COMMIT_SHORT}")
             }
           }
         }
