@@ -26,6 +26,12 @@ ALLOWED_HOSTS = ['.csc.fi', '.researchfi.svc.cluster.local', '.rahtiapp.fi', 'lo
 # Elasticsearch URL
 ELASTICSEARCH_HOST = os.environ.get('DJANGO_ENV_ELASTICSEARCH_HOST')
 
+# Elasticsearch HA Proxy username
+ELASTICSEARCH_HA_PROXY_USERNAME = os.environ.get('DJANGO_ENV_ELASTICSEARCH_HA_PROXY_USERNAME', None)
+
+# Elasticsearch HA Proxy password
+ELASTICSEARCH_HA_PROXY_PASSWORD = os.environ.get('DJANGO_ENV_ELASTICSEARCH_HA_PROXY_PASSWORD', None)
+
 # Application definition
 
 INSTALLED_APPS = [
