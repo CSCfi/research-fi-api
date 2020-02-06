@@ -147,6 +147,10 @@ objects:
                 value: ${DJANGO_ENV_SECRET_KEY_DEVEL}
               - name: DJANGO_ENV_ELASTICSEARCH_HOST
                 value: ${DJANGO_ENV_ELASTICSEARCH_HOST_DEVEL}
+              - name: DJANGO_ENV_ELASTICSEARCH_HA_PROXY_USERNAME
+                value: ${DJANGO_ENV_ELASTICSEARCH_HA_PROXY_USERNAME}
+              - name: DJANGO_ENV_ELASTICSEARCH_HA_PROXY_PASSWORD
+                value: ${DJANGO_ENV_ELASTICSEARCH_HA_PROXY_PASSWORD}
     replicas: 1
     triggers:
     - type: ConfigChange
@@ -190,6 +194,10 @@ objects:
                 value: ${DJANGO_ENV_SECRET_KEY_PRODUCTION}
               - name: DJANGO_ENV_ELASTICSEARCH_HOST
                 value: ${DJANGO_ENV_ELASTICSEARCH_HOST_PRODUCTION}
+              - name: DJANGO_ENV_ELASTICSEARCH_HA_PROXY_USERNAME
+                value: ${DJANGO_ENV_ELASTICSEARCH_HA_PROXY_USERNAME}
+              - name: DJANGO_ENV_ELASTICSEARCH_HA_PROXY_PASSWORD
+                value: ${DJANGO_ENV_ELASTICSEARCH_HA_PROXY_PASSWORD}
     replicas: 1
     triggers:
     - type: ConfigChange
@@ -214,3 +222,7 @@ parameters:
   description: Production enviroment Django SECRET_KEY, random string.
 - name: DJANGO_ENV_ELASTICSEARCH_PRODUCTION
   description: Production environment Elasticsearch address, for example 'https://myhost-prod.mydomain:myport'
+- name: DJANGO_ENV_ELASTICSEARCH_HA_PROXY_USERNAME
+  description: Elasticsearch HA Proxy username
+- name: DJANGO_ENV_ELASTICSEARCH_HA_PROXY_PASSWORD
+  description: Elasticsearch HA Proxy password

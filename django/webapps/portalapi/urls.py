@@ -8,7 +8,6 @@ from django.conf.urls import url
 from . import views
 
 urlpatterns = [
-    url('ping', views.ping, name='ping'),
     url(r'^(?P<path>.*)$',
         views.ElasticsearchProxyView.as_view(), name='elasticsearch-proxy-view'),
 ]
