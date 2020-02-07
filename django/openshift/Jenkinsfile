@@ -92,6 +92,7 @@ pipeline {
     Production deployment is triggered by tagging the devel "latest" as production "latest".
     Also tag the production "latest" with Git commit hash.
     */
+    /*
     stage('Deploy to production') {
       steps {
         timeout(time: 12, unit: 'HOURS') {
@@ -107,5 +108,6 @@ pipeline {
         }
       }
     }
+    */
   }
 }
