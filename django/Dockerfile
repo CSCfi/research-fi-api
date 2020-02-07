@@ -6,7 +6,7 @@
 # :license: MIT
 
 # Use official Python image as base. https://hub.docker.com/_/python
-FROM python:3.7-alpine
+FROM python:3.6-alpine
 
 # Set Python environment variables
 #   PYTHONDONTWRITEBYTECODE: Do not try to write .pyc files on the import of source modules.
