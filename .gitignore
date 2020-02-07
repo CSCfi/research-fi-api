@@ -1,4 +1,5 @@
 .env
+.python-version
 django/webapps/build_info.txt
 django/webapps/webapps/local_settings.py
 django/webapps/portalapi/unittest_results/result.xml
