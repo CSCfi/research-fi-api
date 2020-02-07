@@ -49,6 +49,9 @@ class ElasticsearchProxyView(ProxyView):
 
         allowed_methods = ("GET", "POST")
 
+        # Debug print headers
+        print(request.headers.keys)
+
         # Reject disallowed requst methods
         if request.method not in allowed_methods:
             return HttpResponseNotAllowed(allowed_methods)
