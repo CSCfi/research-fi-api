@@ -11,9 +11,6 @@ from revproxy.views import ProxyView
 from .utils import get_basic_authentication_header_value
 import re
 
-# Basic authentication header
-basic_authentication_header_value = get_basic_authentication_header_value()
-
 class ElasticsearchProxyView(ProxyView):
     """
     Proxies GET request to Elasticsearch.
@@ -37,6 +34,7 @@ class ElasticsearchProxyView(ProxyView):
         # Call super to get default headers
         headers = super(ElasticsearchProxyView, self).get_request_headers()
         # Add HTTP basic authentication header
+        basic_authentication_header_value = get_basic_authentication_header_value(settings.ELASTICSEARCH_HA_PROXY_USERNAME, settings.ELASTICSEARCH_HA_PROXY_PASSWORD)
         if basic_authentication_header_value is not None:
             headers['Authorization'] = basic_authentication_header_value
         return headers
