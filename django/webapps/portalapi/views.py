@@ -49,8 +49,9 @@ class ElasticsearchProxyView(ProxyView):
 
         allowed_methods = ("GET", "POST")
 
-        # Debug print headers
-        print(request.headers.keys)
+        # Debug print end user source IP address from headers field 'X-Forwarded-For'. It is set by the load balancer. 
+        if 'X-Forwarded-For' in request.headers:
+            print(request.headers['X-Forwarded-For'])
 
         # Reject disallowed requst methods
         if request.method not in allowed_methods:
