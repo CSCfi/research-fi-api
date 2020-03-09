@@ -41,9 +41,9 @@ objects:
       description: Research.fi API service for production
   spec:
     ports:
-      - name: api
-        port: 8081
-        targetPort: 8081
+      - name: api-prod
+        port: 8080
+        targetPort: 8080
     selector:
       depcfg: api-production
 
