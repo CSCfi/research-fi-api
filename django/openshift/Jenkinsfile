@@ -53,7 +53,7 @@ pipeline {
         script {
           openshift.withCluster() {
             openshift.withProject() {
-              sleep 30
+              sleep 60
               timeout(5) { 
                 openshift.selector("dc", "researchfi-api-devel-deployment").related('pods').untilEach(1) {
                   return (it.object().status.phase == "Running")
@@ -92,7 +92,6 @@ pipeline {
     Production deployment is triggered by tagging the devel "latest" as production "latest".
     Also tag the production "latest" with Git commit hash.
     */
-    /*
     stage('Deploy to production') {
       steps {
         timeout(time: 12, unit: 'HOURS') {
@@ -108,6 +107,5 @@ pipeline {
         }
       }
     }
-    */
   }
 }
