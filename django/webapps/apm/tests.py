@@ -13,7 +13,7 @@ import urllib3
 from common import utils
 
 class ApmProxyViewTests(SimpleTestCase):
-    base_url = '/portalapi/'
+    base_url = '/apm/'
 
     def setUp(self):
         # Get mock for testing http request.
@@ -34,8 +34,7 @@ class ApmProxyViewTests(SimpleTestCase):
         """HTTP basic authentication header should be added when settings.HTTP_AUTH_USERNAME and settings.HTTP_AUTH_PASSWORD are defined."""
         with self.settings(HTTP_AUTH_USERNAME='foo'):
             with self.settings(HTTP_AUTH_PASSWORD='bar'):
-                search_url = self.base_url + "publication,person/"
-                response = self.client.get(search_url)
+                response = self.client.post(self.base_url)
                 headers = self.urlopen_mock.call_args.kwargs['headers']
                 self.assertTrue('Authorization' in headers, 'Authorization header is not present')
                 expected_header_value = utils.get_basic_authentication_header_value(settings.HTTP_AUTH_USERNAME, settings.HTTP_AUTH_PASSWORD)
@@ -43,48 +42,32 @@ class ApmProxyViewTests(SimpleTestCase):
 
     def test_http_basic_authentication_header_is_not_added_when_username_or_password_is_not_defined(self):
         """HTTP basic authentication header should not be added when settings.HTTP_AUTH_USERNAME and/or settings.HTTP_AUTH_PASSWORD is None."""
-        search_url = self.base_url + "publication,person/"
         with self.settings(HTTP_AUTH_USERNAME=None):
             with self.settings(HTTP_AUTH_PASSWORD=None):
-                response = self.client.get(search_url)
+                response = self.client.post(self.base_url)
                 headers = self.urlopen_mock.call_args.kwargs['headers']
                 self.assertFalse('Authorization' in headers, 'Authorization header is present when both password and username are None')
         with self.settings(HTTP_AUTH_USERNAME=None):
             with self.settings(HTTP_AUTH_PASSWORD='bar'):
-                response = self.client.get(search_url)
+                response = self.client.post(self.base_url)
                 headers = self.urlopen_mock.call_args.kwargs['headers']
                 self.assertFalse('Authorization' in headers, 'Authorization header is present when username is None')
         with self.settings(HTTP_AUTH_USERNAME='foo'):
             with self.settings(HTTP_AUTH_PASSWORD=None):
-                response = self.client.get(search_url)
+                response = self.client.post(self.base_url)
                 headers = self.urlopen_mock.call_args.kwargs['headers']
                 self.assertFalse('Authorization' in headers, 'Authorization header is present when password is None')
 
-    def test_get_request_is_allowed(self):
-        """When request HTTP method is GET it is forwarded to Elasticsearch."""
-        # In unit test, instead of Elasticsearch, forward request to internal view "ping", which responds with HTTP status 200.
-        search_url = self.base_url + "publication,person/"
-        response = self.client.get(search_url)
-        self.assertEquals(response.status_code, HTTPStatus.OK.value, 'GET request is not allowed')
+    def test_post_request_is_allowed(self):
+        """When request HTTP method is POST it is forwarded to Application Performance Monitoring."""
+        # In unit test, instead of APM, forward request to internal view "ping", which responds with HTTP status 200.
+        response = self.client.post(self.base_url)
+        self.assertEquals(response.status_code, HTTPStatus.OK.value, 'POST request is not allowed')
 
-
-    def test_post_request_not_allowed_without_search(self):
-        """When request HTTP method is POST and request URL does not contain '_search', it is rejected with status code 405 Method Not Allowed"""
-        search_url = self.base_url + "publication,person/"
-        response = self.client.post(search_url)
-        self.assertEquals(response.status_code, HTTPStatus.METHOD_NOT_ALLOWED.value, 'POST request is allowed without _search: ' + search_url)
-
-    def test_post_request_not_allowed_when_search_is_not_after_index_name(self):
-        """When request HTTP method is POST and request URL does not contain '_search' after index name(s), it is rejected with status code 405 Method Not Allowed"""
-        search_url = self.base_url + "publication,person/somepathname/_search"
-        response = self.client.post(search_url)
-        self.assertEquals(response.status_code, HTTPStatus.METHOD_NOT_ALLOWED.value, 'POST request is allowed when _search is not after index name: ' + search_url)
-
-    def test_post_request_not_allowed_when_search_in_URL_parameters(self):
-        """When request HTTP method is POST and request URL contains '_search' in URL parameters, it is rejected with status code 405 Method Not Allowed"""
-        search_url = self.base_url + "publication,person?_search"
-        response = self.client.post(search_url)
-        self.assertEquals(response.status_code, HTTPStatus.METHOD_NOT_ALLOWED.value, 'POST request is allowed when _search in URL parameters: ' + search_url)
+    def test_get_request_not_allowed(self):
+        """When request HTTP method is GET it is rejected with status code 405 Method Not Allowed"""
+        response = self.client.get(self.base_url)
+        self.assertEquals(response.status_code, HTTPStatus.METHOD_NOT_ALLOWED.value, 'GET request is allowed')
 
     def test_put_request_not_allowed(self):
         """When request HTTP method is PUT, it is rejected with status code 405 Method Not Allowed"""
