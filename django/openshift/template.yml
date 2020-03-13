@@ -144,13 +144,13 @@ objects:
                 protocol: TCP
             env:
               - name: DJANGO_ENV_SECRET_KEY
-                value: ${DJANGO_ENV_SECRET_KEY_DEVEL}
-              - name: DJANGO_ENV_ELASTICSEARCH_HOST
-                value: ${DJANGO_ENV_ELASTICSEARCH_HOST_DEVEL}
-              - name: DJANGO_ENV_ELASTICSEARCH_HA_PROXY_USERNAME
-                value: ${DJANGO_ENV_ELASTICSEARCH_HA_PROXY_USERNAME}
-              - name: DJANGO_ENV_ELASTICSEARCH_HA_PROXY_PASSWORD
-                value: ${DJANGO_ENV_ELASTICSEARCH_HA_PROXY_PASSWORD}
+                value: ${DEVEL_DJANGO_ENV_SECRET_KEY}
+              - name: DJANGO_ENV_HA_PROXY_HOST
+                value: ${DEVEL_DJANGO_ENV_HA_PROXY_HOST}
+              - name: DJANGO_ENV_HTTP_AUTH_USERNAME
+                value: ${DEVEL_DJANGO_ENV_HTTP_AUTH_USERNAME}
+              - name: DJANGO_ENV_HTTP_AUTH_PASSWORD
+                value: ${DEVEL_DJANGO_ENV_HTTP_AUTH_PASSWORD}
     replicas: 1
     triggers:
     - type: ConfigChange
@@ -191,13 +191,13 @@ objects:
                 protocol: TCP
             env:
               - name: DJANGO_ENV_SECRET_KEY
-                value: ${DJANGO_ENV_SECRET_KEY_PRODUCTION}
-              - name: DJANGO_ENV_ELASTICSEARCH_HOST
-                value: ${DJANGO_ENV_ELASTICSEARCH_HOST_PRODUCTION}
-              - name: DJANGO_ENV_ELASTICSEARCH_HA_PROXY_USERNAME
-                value: ${DJANGO_ENV_ELASTICSEARCH_HA_PROXY_USERNAME}
-              - name: DJANGO_ENV_ELASTICSEARCH_HA_PROXY_PASSWORD
-                value: ${DJANGO_ENV_ELASTICSEARCH_HA_PROXY_PASSWORD}
+                value: ${PRODUCTION_DJANGO_ENV_SECRET_KEY}
+              - name: DJANGO_ENV_HA_PROXY_HOST
+                value: ${PRODUCTION_DJANGO_ENV_HA_PROXY_HOST}
+              - name: DJANGO_ENV_HTTP_AUTH_USERNAME
+                value: ${PRODUCTION_DJANGO_ENV_HTTP_AUTH_USERNAME}
+              - name: DJANGO_ENV_HTTP_AUTH_PASSWORD
+                value: ${PRODUCTION_DJANGO_ENV_HTTP_AUTH_PASSWORD}
     replicas: 1
     triggers:
     - type: ConfigChange
@@ -214,15 +214,19 @@ objects:
 
 # Template parameters
 parameters:
-- name: DJANGO_ENV_SECRET_KEY_DEVEL
-  description: Devel enviroment Django SECRET_KEY, random string.
-- name: DJANGO_ENV_ELASTICSEARCH_HOST_DEVEL
-  description: Devel environment Elasticsearch address, for example 'https://myhost-devel.mydomain:myport'
-- name: DJANGO_ENV_SECRET_KEY_PRODUCTION
-  description: Production enviroment Django SECRET_KEY, random string.
-- name: DJANGO_ENV_ELASTICSEARCH_PRODUCTION
-  description: Production environment Elasticsearch address, for example 'https://myhost-prod.mydomain:myport'
-- name: DJANGO_ENV_ELASTICSEARCH_HA_PROXY_USERNAME
-  description: Elasticsearch HA Proxy username
-- name: DJANGO_ENV_ELASTICSEARCH_HA_PROXY_PASSWORD
-  description: Elasticsearch HA Proxy password
+- name: DEVEL_DJANGO_ENV_SECRET_KEY
+  description: Devel enviroment Django SECRET_KEY, random string
+- name: DEVEL_DJANGO_ENV_HA_PROXY_HOST
+  description: Devel environment HA Proxy address, for example 'https://myhost-devel.mydomain:myport'
+- name: DEVEL_DJANGO_ENV_HTTP_AUTH_USERNAME
+  description: Devel environment HA Proxy HTTP auth username
+- name: DEVEL_DJANGO_ENV_HTTP_AUTH_PASSWORD
+  description: Devel environment HA Proxy HTTP auth password
+- name: PRODUCTION_DJANGO_ENV_SECRET_KEY
+  description: Production enviroment Django SECRET_KEY, random string
+- name: PRODUCTION_DJANGO_ENV_HA_PROXY_HOST
+  description: Production environment HA Proxy address, for example 'https://myhost-prod.mydomain:myport'
+- name: PRODUCTION_DJANGO_ENV_HTTP_AUTH_USERNAME
+  description: Production environment HA Proxy HTTP auth username
+- name: PRODUCTION_DJANGO_ENV_HTTP_AUTH_PASSWORD
+  description: Production environment HA Proxy HTTP auth password
