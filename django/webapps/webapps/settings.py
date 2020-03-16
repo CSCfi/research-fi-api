@@ -23,14 +23,15 @@ DEBUG = bool(int(os.environ.get('DEBUG', False)))
 # A list of strings representing the host/domain names that this Django site can serve
 ALLOWED_HOSTS = ['.csc.fi', '.researchfi.svc.cluster.local', '.rahtiapp.fi', 'localhost', '127.0.0.1']
 
-# Elasticsearch URL
-ELASTICSEARCH_HOST = os.environ.get('DJANGO_ENV_ELASTICSEARCH_HOST')
+# HA Proxy
+# If value is not available in environment variables, use dummy localhost value to enable unit test execution.
+HA_PROXY_HOST = os.environ.get('DJANGO_ENV_HA_PROXY_HOST') if os.environ.get('DJANGO_ENV_HA_PROXY_HOST') is not None else "http://localhost:321321"
 
-# Elasticsearch HA Proxy username
-ELASTICSEARCH_HA_PROXY_USERNAME = os.environ.get('DJANGO_ENV_ELASTICSEARCH_HA_PROXY_USERNAME', None)
+# HTTP auth username
+HTTP_AUTH_USERNAME = os.environ.get('DJANGO_ENV_HTTP_AUTH_USERNAME', None)
 
-# Elasticsearch HA Proxy password
-ELASTICSEARCH_HA_PROXY_PASSWORD = os.environ.get('DJANGO_ENV_ELASTICSEARCH_HA_PROXY_PASSWORD', None)
+# HTTP auth password
+HTTP_AUTH_PASSWORD = os.environ.get('DJANGO_ENV_HTTP_AUTH_PASSWORD', None)
 
 # Application definition
 
