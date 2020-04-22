@@ -39,9 +39,9 @@ if os.environ.get('DJANGO_ENV_EMAIL_HOST') is not None:
 else:
     EMAIL_HOST = 'localhost'
 
-# Email sender address for server errors
-if os.environ.get('HOSTNAME') is not None:
-    SERVER_EMAIL = 'root@' + os.environ.get('HOSTNAME')
+# Email sender address
+if os.environ.get('DJANGO_ENV_SERVER_EMAIL') is not None:
+    SERVER_EMAIL = os.environ.get('DJANGO_ENV_SERVER_EMAIL')
 else:
     SERVER_EMAIL = 'root@localhost'
 
