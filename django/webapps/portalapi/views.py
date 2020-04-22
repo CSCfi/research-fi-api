@@ -63,6 +63,6 @@ class ElasticsearchProxyView(ProxyView):
         try:
             return super(ElasticsearchProxyView, self).dispatch(request, *args, **kwargs)
         except Exception as e:
-            print('Error: Cannot connect to Elasticsearch at ' + settings.API_HOST)
+            print('Error: Cannot connect to Elasticsearch at ' + settings.HA_PROXY_HOST)
             print(e)
             return HttpResponse(status=HTTPStatus.BAD_GATEWAY.value)
