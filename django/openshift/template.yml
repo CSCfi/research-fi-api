@@ -151,6 +151,12 @@ objects:
                 value: ${DEVEL_DJANGO_ENV_HTTP_AUTH_USERNAME}
               - name: DJANGO_ENV_HTTP_AUTH_PASSWORD
                 value: ${DEVEL_DJANGO_ENV_HTTP_AUTH_PASSWORD}
+              - name: DJANGO_ENV_EMAIL_HOST
+                value: ${DEVEL_DJANGO_ENV_EMAIL_HOST}
+              - name: DJANGO_ENV_SERVER_EMAIL
+                value: ${DEVEL_DJANGO_ENV_SERVER_EMAIL}
+              - name: DJANGO_ENV_ADMINS
+                value: ${DEVEL_DJANGO_ENV_ADMINS}
     replicas: 1
     triggers:
     - type: ConfigChange
@@ -198,6 +204,13 @@ objects:
                 value: ${PRODUCTION_DJANGO_ENV_HTTP_AUTH_USERNAME}
               - name: DJANGO_ENV_HTTP_AUTH_PASSWORD
                 value: ${PRODUCTION_DJANGO_ENV_HTTP_AUTH_PASSWORD}
+              - name: DJANGO_ENV_EMAIL_HOST
+                value: ${PRODUCTION_DJANGO_ENV_EMAIL_HOST}
+              - name: DJANGO_ENV_SERVER_EMAIL
+                value: ${PRODUCTION_DJANGO_ENV_SERVER_EMAIL}
+              - name: DJANGO_ENV_ADMINS
+                value: ${PRODUCTION_DJANGO_ENV_ADMINS}
+                
     replicas: 1
     triggers:
     - type: ConfigChange
@@ -222,6 +235,12 @@ parameters:
   description: Devel environment HA Proxy HTTP auth username
 - name: DEVEL_DJANGO_ENV_HTTP_AUTH_PASSWORD
   description: Devel environment HA Proxy HTTP auth password
+- name: DEVEL_DJANGO_ENV_EMAIL_HOST
+  description: Devel environment email server
+- name: DEVEL_DJANGO_ENV_SERVER_EMAIL
+  description: Devel environment email sender address
+- name: DEVEL_DJANGO_ENV_ADMINS
+  description: Devel environment admin email receivers. Comma separated list of email addresses, for example, 'admin1@myhost.com,admin2@myhost.com'
 - name: PRODUCTION_DJANGO_ENV_SECRET_KEY
   description: Production enviroment Django SECRET_KEY, random string
 - name: PRODUCTION_DJANGO_ENV_HA_PROXY_HOST
@@ -230,3 +249,9 @@ parameters:
   description: Production environment HA Proxy HTTP auth username
 - name: PRODUCTION_DJANGO_ENV_HTTP_AUTH_PASSWORD
   description: Production environment HA Proxy HTTP auth password
+- name: PRODUCTION_DJANGO_ENV_EMAIL_HOST
+  description: Production environment email server
+- name: PRODUCTION_DJANGO_ENV_SERVER_EMAIL
+  description: Production environment email sender address
+- name: PRODUCTION_DJANGO_ENV_ADMINS
+  description: Production environment admin email receivers. Comma separated list of email addresses, for example, 'admin1@myhost.com,admin2@myhost.com'
