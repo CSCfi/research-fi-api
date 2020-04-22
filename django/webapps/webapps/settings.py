@@ -33,6 +33,29 @@ HTTP_AUTH_USERNAME = os.environ.get('DJANGO_ENV_HTTP_AUTH_USERNAME', None)
 # HTTP auth password
 HTTP_AUTH_PASSWORD = os.environ.get('DJANGO_ENV_HTTP_AUTH_PASSWORD', None)
 
+# Email server
+if os.environ.get('DJANGO_ENV_EMAIL_HOST') is not None:
+    EMAIL_HOST = os.environ.get('DJANGO_ENV_EMAIL_HOST')
+else:
+    EMAIL_HOST = 'localhost'
+
+# Email sender address for server errors
+if os.environ.get('HOSTNAME') is not None:
+    SERVER_EMAIL = 'root@' + os.environ.get('HOSTNAME')
+else:
+    SERVER_EMAIL = 'root@localhost'
+
+# Admin email receivers are parsed from environment variable, for example, 'admin1@myhost.com,admin2@myhost.com'
+ADMINS = []
+if os.environ.get('DJANGO_ENV_ADMINS') is not None:
+    try:
+        admin_emails = os.environ.get('DJANGO_ENV_ADMINS').split(',')
+        for email in admin_emails:
+            ADMINS.append(('researchfi administrator', email.strip()))
+    except:
+        print('Error: Could not parse ADMIN emails from environment variable DJANGO_ENV_ADMINS')
+        pass
+
 # Application definition
 
 INSTALLED_APPS = [

@@ -74,7 +74,7 @@ objects:
     source:
       git:
         uri: https://github.com/CSCfi/research-fi-api.git
-        ref: devel
+        ref: CSCTTV-1085 # devel
       contextDir: django
     strategy:
       sourceStrategy:
@@ -112,7 +112,7 @@ objects:
     source:
       git:
         uri: https://github.com/CSCfi/research-fi-api.git
-        ref: devel
+        ref: CSCTTV-1085 # devel
       contextDir: django
     strategy:
       jenkinsPipelineStrategy:
@@ -137,7 +137,7 @@ objects:
       spec:
         containers:
           - name: api-devel
-            image: researchfi/researchfi-api-devel
+            image: ts/researchfi-api-devel
             imagePullPolicy: Always
             ports:
               - containerPort: 8001
@@ -184,7 +184,7 @@ objects:
       spec:
         containers:
           - name: api-production
-            image: researchfi/researchfi-api-production
+            image: ts/researchfi-api-production
             imagePullPolicy: Always
             ports:
               - containerPort: 8002
